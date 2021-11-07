@@ -40,7 +40,7 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
-    "ng-i18n-merge-files": "0.0.12",
+    "ng-i18n-merge-files": "1.0.0",
     "typescript": "~4.4.3"
   }
 }

@@ -1,8 +1,8 @@
 {
   "name": "ng-i18n-merge-files",
-  "version": "0.0.14",
+  "version": "1.0.0",
   "description": "Merges multiple Angular localization files into a single file.",
-  "homepage": "https://github.com/marcioggs/ng-i18n-merge-files",
+  "homepage": "https://github.com/marcioggs/ng-i18n-merge-files#readme",
   "bugs": "https://github.com/marcioggs/ng-i18n-merge-files/issues",
   "repository": "https://github.com/marcioggs/ng-i18n-merge-files.git",
   "bin": {
