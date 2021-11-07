@@ -1,5 +1,10 @@
 # Angular i18n Merge Files
 
+[![NPM version][npm-version-image]][npm-url]
+
+[npm-url]: https://npmjs.org/package/ng-i18n-merge-files
+[npm-version-image]: https://img.shields.io/npm/v/ng-i18n-merge-files.svg?style=flat
+
 ## Problem
 
 Angular expects all the translated messages for a specific language to be on a single file, which can result in a large
