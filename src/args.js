@@ -35,7 +35,8 @@ function getArgs() {
         .alias('help', 'h')
         .argv;
 
-    args.in = getAbsolutePath(args.in);
+    const inPathname = Array.isArray(args.in) ? args.in[args.in.length - 1] : args.in
+    args.in = getAbsolutePath(inPathname);
     args.out = getAbsolutePath(args.out);
 
     return args;
