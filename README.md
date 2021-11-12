@@ -97,9 +97,56 @@ Options:
                  [string] [default: "{current working dir}\src\locale"]
   -f, --format   Format of the translation file. Currently only json is supported.
                  [required] [options: "json"]
+  -m, --mergeFilename   Add filename to key name
+                 [boolean] [default: false]
+  -l, --defaultLanguage   Default language of the app. Language code would be removed from filename
+                 [string] [default: 'en']
   -h, --help     Shows help
                  [boolean]
 ```
+
+## Merging filename into keys
+
+If true, filename would be merged into the keys. Example:
+
+**learning.course.messages.fr.json**
+
+```json
+{
+  "title": "Message 1",
+  "subtitle": "Message 2"
+  ...
+}
+```
+
+**learning.tutorial.messages.fr.json**
+
+```json
+{
+  "title": "Message 3",
+  "subtitle": "Message 4"
+  ...
+}
+```
+
+**Would be merged into**
+
+```json
+{
+  "locale": "fr",
+  "translations": {
+    "learning.course.title": "Message 1",
+    "learning.course.subtitle": "Message 2",
+    "learning.tutorial.title": "Message 3",
+    "learning.tutorial.subtitle": "Message 4",
+    ...
+  }
+}
+```
+
+## Default language
+
+Default language is used to merge default language files into single file. For example, for `en` (default) language, buttons.messages.en.json, header.messages.en.json into messages.json
 
 ## Adding the generated files to gitignore
 **.gitignore**:

@@ -31,6 +31,18 @@ function getArgs() {
             choices: ['json'],
             demandOption: true
         })
+        .option('mergeFilename', {
+            description: 'Add filename to key name',
+            alias: 'm',
+            default: false,
+            type: 'boolean'
+        })
+        .option('defaultLanguage', {
+            description: 'Default language of the app. Language code would be removed from filename',
+            alias: 'l',
+            default: 'en',
+            type: 'string'
+        })
         .help()
         .alias('help', 'h')
         .argv;
