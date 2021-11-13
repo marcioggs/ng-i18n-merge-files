@@ -97,8 +97,51 @@ Options:
                  [string] [default: "{current working dir}\src\locale"]
   -f, --format   Format of the translation file. Currently only json is supported.
                  [required] [options: "json"]
+  -ip, --id-prefix   Adds a prefix to the translation identifier based on the translation filename (see --id-prefix-strategy)
+                 [boolean] [default: false]
+  -ips, --id-prefix-strategy   Naming strategy applied to the translation filename to generate the identifier prefix
+                 [string] [options: "camel-case", "as-is", "dot-case"] [default: "camel-case"]
   -h, --help     Shows help
                  [boolean]
+```
+
+## Merging filename into keys
+
+If true, filename would be merged into the keys (with default, 'camel-case' prefix strategy). Example:
+
+**learning-course.messages.fr.json**
+
+```json
+{
+  "title": "Message 1",
+  "subtitle": "Message 2"
+  ...
+}
+```
+
+**learning-tutorial.messages.fr.json**
+
+```json
+{
+  "title": "Message 3",
+  "subtitle": "Message 4"
+  ...
+}
+```
+
+**Would be merged into**
+
+```json
+{
+  "locale": "fr",
+  "translations": {
+    "learningCourseTitle": "Message 1",
+    "learningCourseSubtitle": "Message 2",
+    "learningTutorialTitle": "Message 3",
+    "learningTutorialSubtitle": "Message 4",
+    ...
+  }
+}
 ```
 
 ## Adding the generated files to gitignore

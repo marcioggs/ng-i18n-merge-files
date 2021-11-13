@@ -31,11 +31,24 @@ function getArgs() {
             choices: ['json'],
             demandOption: true
         })
+        .option('id-prefix', {
+            description: 'Adds a prefix to the translation identifier based on the translation filename (see --id-prefix-strategy)',
+            alias: 'p',
+            default: false,
+            type: 'boolean'
+        })
+        .option('id-prefix-strategy', {
+            description: 'Naming strategy applied to the translation filename to generate the identifier prefix',
+            alias: 's',
+            default: 'camel-case',
+            choices: ['camel-case', 'as-is', 'dot-case']
+        })
         .help()
         .alias('help', 'h')
         .argv;
 
-    args.in = getAbsolutePath(args.in);
+    const inPathname = Array.isArray(args.in) ? args.in[args.in.length - 1] : args.in
+    args.in = getAbsolutePath(inPathname);
     args.out = getAbsolutePath(args.out);
 
     return args;

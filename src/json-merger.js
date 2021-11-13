@@ -1,9 +1,11 @@
 const glob = require('glob');
 const fs = require('fs');
 const path = require('path');
+const changeCase = require('change-case');
 
 const messagesFilenameGlobPattern = '/**/*.messages.*.json';
 const messagesFilenameRegex = /.messages.(.*).json$/i;
+const messagesNameRegex = /.+?(?=.messages.)/i;
 
 /**
  * Merges the multiple partial messages files into a single message file per language.
@@ -14,7 +16,7 @@ const messagesFilenameRegex = /.messages.(.*).json$/i;
  * @param inputRootFolder Input root folder containing partial message files
  * @param outputFolder Output folder where the merged files will be saved
  */
-function merge(inputRootFolder, outputFolder) {
+function merge(inputRootFolder, outputFolder, idPrefix, idPrefixStrategy) {
 
     glob(inputRootFolder + messagesFilenameGlobPattern, {}, (err, messageFilePaths) => {
         if (err) {
@@ -22,7 +24,7 @@ function merge(inputRootFolder, outputFolder) {
             process.exit(-1);
         }
 
-        const langJsonMap = buildLangJsonMap(messageFilePaths);
+        const langJsonMap = buildLangJsonMap(messageFilePaths, idPrefix, idPrefixStrategy);
         saveToFiles(langJsonMap, outputFolder);
 
         if (langJsonMap.size === 0) {
@@ -37,13 +39,23 @@ function merge(inputRootFolder, outputFolder) {
  * @param messageFilePaths Paths of the files containing partial translation
  * @returns Map
  */
-function buildLangJsonMap(messageFilePaths) {
+function buildLangJsonMap(messageFilePaths, idPrefix, idPrefixStrategy) {
     let langJsonMap = new Map();
 
     messageFilePaths.forEach(messageFilePath => {
 
         const messageFileContent = fs.readFileSync(messageFilePath, 'utf8');
+
         const messageJson = JSON.parse(messageFileContent);
+
+        if (idPrefix) {
+            const filename = getNameFromFilename(messageFilePath);
+            const parsedFilename = filename.replace(/\.|-|\_/g, ' ')
+            for (const property in messageJson) {
+                Object.defineProperty(messageJson, buildKeyName(filename + ' ' + property, idPrefixStrategy), Object.getOwnPropertyDescriptor(messageJson, property));
+                delete messageJson[property];
+            }
+        }
 
         const langCode = getLanguageCodeFromFilename(messageFilePath);
 
@@ -74,6 +86,34 @@ function saveToFiles(langJsonMap, outputFolder) {
 
         console.log(`Merged translation file generated at: ${path.normalize(mergedFilePath)}`);
     });
+}
+
+/**
+ * Builds key name
+ *
+ * @param key Key name to transform
+ * @param prefixStrategy Prefix strategy
+ * @returns Key
+ */
+function buildKeyName(key, prefixStrategy) {
+    if (prefixStrategy === 'as-is') {
+        return changeCase.paramCase(key)
+    }
+    if (prefixStrategy === 'dot-case') {
+        return changeCase.dotCase(key)
+    }
+    return changeCase.camelCase(key)
+}
+
+/**
+ * Extracts name from the filename.
+ *
+ * @param filename Filename
+ * @returns File name
+ */
+function getNameFromFilename(filename) {
+    const fullFilename = path.basename(filename)
+    return messagesNameRegex.exec(fullFilename)[0];
 }
 
 /**
