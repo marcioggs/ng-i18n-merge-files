@@ -97,19 +97,19 @@ Options:
                  [string] [default: "{current working dir}\src\locale"]
   -f, --format   Format of the translation file. Currently only json is supported.
                  [required] [options: "json"]
-  -m, --mergeFilename   Add filename to key name
+  -ip, --id-prefix   Adds a prefix to the translation identifier based on the translation filename (see --id-prefix-strategy)
                  [boolean] [default: false]
-  -l, --defaultLanguage   Default language of the app. Language code would be removed from filename
-                 [string] [default: 'en']
+  -ips, --id-prefix-strategy   Naming strategy applied to the translation filename to generate the identifier prefix
+                 [string] [options: "camel-case", "as-is", "dot-case"] [default: "camel-case"]
   -h, --help     Shows help
                  [boolean]
 ```
 
 ## Merging filename into keys
 
-If true, filename would be merged into the keys. Example:
+If true, filename would be merged into the keys (with default, 'camel-case' prefix strategy). Example:
 
-**learning.course.messages.fr.json**
+**learning-course.messages.fr.json**
 
 ```json
 {
@@ -119,7 +119,7 @@ If true, filename would be merged into the keys. Example:
 }
 ```
 
-**learning.tutorial.messages.fr.json**
+**learning-tutorial.messages.fr.json**
 
 ```json
 {
@@ -135,18 +135,14 @@ If true, filename would be merged into the keys. Example:
 {
   "locale": "fr",
   "translations": {
-    "learning.course.title": "Message 1",
-    "learning.course.subtitle": "Message 2",
-    "learning.tutorial.title": "Message 3",
-    "learning.tutorial.subtitle": "Message 4",
+    "learningCourseTitle": "Message 1",
+    "learningCourseSubtitle": "Message 2",
+    "learningTutorialTitle": "Message 3",
+    "learningTutorialSubtitle": "Message 4",
     ...
   }
 }
 ```
-
-## Default language
-
-Default language is used to merge default language files into single file. For example, for `en` (default) language, buttons.messages.en.json, header.messages.en.json into messages.json
 
 ## Adding the generated files to gitignore
 **.gitignore**:

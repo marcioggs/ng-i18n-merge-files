@@ -31,17 +31,17 @@ function getArgs() {
             choices: ['json'],
             demandOption: true
         })
-        .option('mergeFilename', {
-            description: 'Add filename to key name',
-            alias: 'm',
+        .option('id-prefix', {
+            description: 'Adds a prefix to the translation identifier based on the translation filename (see --id-prefix-strategy)',
+            alias: 'p',
             default: false,
             type: 'boolean'
         })
-        .option('defaultLanguage', {
-            description: 'Default language of the app. Language code would be removed from filename',
-            alias: 'l',
-            default: 'en',
-            type: 'string'
+        .option('id-prefix-strategy', {
+            description: 'Naming strategy applied to the translation filename to generate the identifier prefix',
+            alias: 's',
+            default: 'camel-case',
+            choices: ['camel-case', 'as-is', 'dot-case']
         })
         .help()
         .alias('help', 'h')
