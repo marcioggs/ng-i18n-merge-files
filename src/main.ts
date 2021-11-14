@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
-const args = require('./args').get();
-const jsonMerger = require('./json-merger');
+import { getArgs } from './args';
+import * as jsonMerger from './json-merger';
+
+const args = getArgs();
 
 if (args.format === 'json') {
   jsonMerger.merge(args.in, args.out, args['id-prefix'], args['id-prefix-strategy']);
