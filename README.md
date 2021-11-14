@@ -19,8 +19,7 @@ file that can be difficult to maintain and can promote merge conflicts.
     "msg1": "Message 1",
     "msg2": "Message 2",
     "msg3": "Message 3",
-    "msg4": "Message 4",
-    ...
+    "msg4": "Message 4"
   }
 }
 ```
@@ -30,23 +29,21 @@ file that can be difficult to maintain and can promote merge conflicts.
 Angular i18n Merge Files is a tool that generates the final messages file (like the JSON above) by merging multiple
 partial message files.
 
-**component-a.messages.fr.json**
+**component-one.messages.fr.json**
 
 ```json
 {
   "msg1": "Message 1",
   "msg2": "Message 2"
-  ...
 }
 ```
 
-**component-b.messages.fr.json**
+**component-two.messages.fr.json**
 
 ```json
 {
   "msg3": "Message 3",
   "msg4": "Message 4"
-  ...
 }
 ```
 
@@ -78,7 +75,7 @@ This tool can be bind to automatically run before the scripts on package.json th
   "scripts": {
     "i18n:merge-files": "npx ng-i18n-merge-files -f json",
     "build": "npm run i18n:merge-files && ng build",
-    "start:en": "npm run i18n:merge-files && ng serve"
+    "start:fr": "npm run i18n:merge-files && ng serve --configuration development,fr"
   },
   ...
 }
@@ -88,64 +85,59 @@ This tool can be bind to automatically run before the scripts on package.json th
 
 ```
 > npx ng-i18n-merge-files -h
+
 Options:
-      --version  Shows the version number
-                 [boolean]
-  -i, --in       Folder which will be searched recursively for translation files to be merged.                   
-                 [sting] [default: "{current working dir}\src"]
-  -o, --out      Folder where the merged translation files will be saved to.
-                 [string] [default: "{current working dir}\src\locale"]
-  -f, --format   Format of the translation file. Currently only json is supported.
-                 [required] [options: "json"]
-  -ip, --id-prefix   Adds a prefix to the translation identifier based on the translation filename (see --id-prefix-strategy)
-                 [boolean] [default: false]
-  -ips, --id-prefix-strategy   Naming strategy applied to the translation filename to generate the identifier prefix
-                 [string] [options: "camel-case", "as-is", "dot-case"] [default: "camel-case"]
-  -h, --help     Shows help
-                 [boolean]
+      --version                    Show version number                 [boolean]
+  -i, --in                         Folder which will be searched recursively for translation files to be merged.
+                                   [string] [default: "{current working dir}\src"]
+  -o, --out                        Folder where the merged translation files will be saved to.
+                                   [string] [default: "{current working dir}\src\locale"]
+  -f, --format                     Format of the translation file. Currently only json is supported.
+                                   [required] [choices: "json"]
+      --id-prefix, --ip            Adds a prefix to the translation identifier based on the translation filename (see
+                                   --id-prefix-strategy)
+                                   [boolean] [default: false]
+      --id-prefix-strategy, --ips  Naming strategy applied to the translation filename to generate the identifier prefix
+                                   [choices: "camel-case", "as-is", "dot-case"] [default: "camel-case"]
+  -h, --help                       Show help
+                                   [boolean]
 ```
 
-## Merging filename into keys
+### id-prefix
 
-If true, filename would be merged into the keys (with default, 'camel-case' prefix strategy). Example:
-
-**learning-course.messages.fr.json**
-
-```json
-{
-  "title": "Message 1",
-  "subtitle": "Message 2"
-  ...
-}
-```
-
-**learning-tutorial.messages.fr.json**
-
-```json
-{
-  "title": "Message 3",
-  "subtitle": "Message 4"
-  ...
-}
-```
-
-**Would be merged into**
+If set, a prefix will be added to the translation message id based on the translation filename.  
+The same two JSON files from the previous examples would be merged into:
 
 ```json
 {
   "locale": "fr",
   "translations": {
-    "learningCourseTitle": "Message 1",
-    "learningCourseSubtitle": "Message 2",
-    "learningTutorialTitle": "Message 3",
-    "learningTutorialSubtitle": "Message 4",
-    ...
+    "componentOne.msg1": "Message 1",
+    "componentOne.msg2": "Message 2",
+    "componentTwo.msg3": "Message 3",
+    "componentTwo.msg4": "Message 4"
   }
 }
 ```
 
+To change the naming strategy of the prefix, see [id-prefix-strategy](#id-prefix-strategy).
+
+### id-prefix-strategy
+
+The naming strategy that will be applied to the translation filename to generate the message id prefix.
+
+Example for message id `msg1` on file `component-one.messages.fr.json`:
+
+| Strategy   | sMessage id          |
+| ---------- | -------------------- |
+| camel-case | `componentOne.msg1`  |
+| as-is      | `component-one.msg2` |
+| dot-case   | `component.one.msg1` |
+
 ## Adding the generated files to gitignore
+
 **.gitignore**:
+
 ```.gitignore
 messages.*.json
 ```

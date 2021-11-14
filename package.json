@@ -1,6 +1,6 @@
 {
   "name": "ng-i18n-merge-files",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Merges multiple Angular localization files into a single file.",
   "homepage": "https://github.com/marcioggs/ng-i18n-merge-files#readme",
   "bugs": "https://github.com/marcioggs/ng-i18n-merge-files/issues",
@@ -11,16 +11,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "workspaces": [
+    "./sample/*"
+  ],
   "keywords": [
     "angular",
     "i18n",
     "translation"
   ],
-  "author": "",
+  "author": "Márcio Gabriel",
   "license": "ISC",
   "dependencies": {
     "change-case": "^4.1.2",
     "glob": "^7.2.0",
     "yargs": "^17.2.1"
+  },
+  "devDependencies": {
+    "prettier": "2.4.1"
   }
 }

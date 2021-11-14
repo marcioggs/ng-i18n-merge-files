@@ -13,7 +13,7 @@ npm run build
 
 ```
 npm run start        # Without localization (English)
-npm run start:en     # Localized in English 
-npm run start:fr     # Localized in French 
-npm run start:pt     # Localized in Portuguese 
+npm run start:en     # Localized in English
+npm run start:fr     # Localized in French
+npm run start:pt     # Localized in Portuguese
 ```

@@ -1,0 +1,6 @@
+{
+  "htmlAttribute": "Texto do Componente Um em atributo HTML",
+  "htmlComponent": "Texto do Componente Um em componente HTML",
+  "tsVar": "Texto do Componente Um em variável TypeScript",
+  "interpolatedTsVar": "Esse texto é de uma variável interpolada do Componente Um: '{$varToInterpolate}'"
+}

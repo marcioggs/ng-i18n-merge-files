@@ -3,9 +3,26 @@ const fs = require('fs');
 const path = require('path');
 const changeCase = require('change-case');
 
-const messagesFilenameGlobPattern = '/**/*.messages.*.json';
-const messagesFilenameRegex = /.messages.(.*).json$/i;
-const messagesNameRegex = /.+?(?=.messages.)/i;
+/**
+ * Used to find the files to be merged.
+ * @type {string}
+ */
+const translationFilenamesGlobPattern = '/**/*.messages.*.json';
+/**
+ * Used to extract the language code from the filename.
+ *
+ * e.g. component-one.messages.fr.json -> fr
+ * @type {RegExp}
+ */
+const translationFileLanguageCodeRegex = /.messages.(.*).json$/i;
+
+/**
+ * Used to extract the translation file base name from the filename.
+ *
+ * e.g. component-one.messages.fr.json -> component-one
+ * @type {RegExp}
+ */
+const translationFileBaseNameRegex = /^(.*).messages./i;
 
 /**
  * Merges the multiple partial messages files into a single message file per language.
@@ -15,115 +32,161 @@ const messagesNameRegex = /.+?(?=.messages.)/i;
  *
  * @param inputRootFolder Input root folder containing partial message files
  * @param outputFolder Output folder where the merged files will be saved
+ * @param idPrefix If a prefix based on the translation filename will be added to the translation keys
+ * @param idPrefixStrategy Strategy to create the idPrefix
  */
 function merge(inputRootFolder, outputFolder, idPrefix, idPrefixStrategy) {
+  glob(inputRootFolder + translationFilenamesGlobPattern, {}, (err, translationFilePaths) => {
+    if (err) {
+      console.error(err);
+      process.exit(-1);
+    }
 
-    glob(inputRootFolder + messagesFilenameGlobPattern, {}, (err, messageFilePaths) => {
-        if (err) {
-            console.error(err);
-            process.exit(-1);
-        }
+    const mergedTranslationsJsonMap = buildMergedTranslationsJsonMap(
+      translationFilePaths,
+      idPrefix,
+      idPrefixStrategy
+    );
 
-        const langJsonMap = buildLangJsonMap(messageFilePaths, idPrefix, idPrefixStrategy);
-        saveToFiles(langJsonMap, outputFolder);
+    saveMergedTranslationFiles(mergedTranslationsJsonMap, outputFolder);
 
-        if (langJsonMap.size === 0) {
-            console.warn(`Didn't find any files on folder '${inputRootFolder}' matching pattern '${messagesFilenameGlobPattern}'.`);
-        }
-    });
+    if (mergedTranslationsJsonMap.size === 0) {
+      console.warn(
+        `Didn't find any files on folder '${inputRootFolder}' matching pattern '${translationFilenamesGlobPattern}'.`
+      );
+    }
+  });
 }
 
 /**
- * Builds a map containing the language code as the key and the JSON on the format expected by Angular Localization as the key.
+ * Builds a map containing the language code as the key and the merged translation JSON as the value, already in the
+ * format expected by Angular.
  *
- * @param messageFilePaths Paths of the files containing partial translation
+ * @param partialTranslationFilePaths Paths of the files containing partial translation
+ * @param idPrefix If a prefix based on the translation filename will be added to the translation keys
+ * @param idPrefixStrategy Strategy to create the idPrefix
  * @returns Map
  */
-function buildLangJsonMap(messageFilePaths, idPrefix, idPrefixStrategy) {
-    let langJsonMap = new Map();
+function buildMergedTranslationsJsonMap(partialTranslationFilePaths, idPrefix, idPrefixStrategy) {
+  let mergedTranslationsJsonMap = new Map();
 
-    messageFilePaths.forEach(messageFilePath => {
+  partialTranslationFilePaths.forEach((partialTranslationFilePath) => {
+    const partialTranslationFileContent = fs.readFileSync(partialTranslationFilePath, 'utf8');
 
-        const messageFileContent = fs.readFileSync(messageFilePath, 'utf8');
+    const partialTranslationJson = JSON.parse(partialTranslationFileContent);
 
-        const messageJson = JSON.parse(messageFileContent);
+    if (idPrefix) {
+      addPrefixToTranslationMessageIds(
+        partialTranslationJson,
+        partialTranslationFilePath,
+        idPrefixStrategy
+      );
+    }
 
-        if (idPrefix) {
-            const filename = getNameFromFilename(messageFilePath);
-            const parsedFilename = filename.replace(/\.|-|\_/g, ' ')
-            for (const property in messageJson) {
-                Object.defineProperty(messageJson, buildKeyName(filename + ' ' + property, idPrefixStrategy), Object.getOwnPropertyDescriptor(messageJson, property));
-                delete messageJson[property];
-            }
-        }
+    const languageCode = getLanguageCodeFromFilename(partialTranslationFilePath);
 
-        const langCode = getLanguageCodeFromFilename(messageFilePath);
+    if (!mergedTranslationsJsonMap.has(languageCode)) {
+      mergedTranslationsJsonMap.set(languageCode, {
+        locale: languageCode,
+        translations: {},
+      });
+    }
 
-        if (!langJsonMap.has(langCode)) {
-            langJsonMap.set(langCode, {locale: langCode, translations: {}});
-        }
+    const mergedTranslationJson = mergedTranslationsJsonMap.get(languageCode);
+    Object.assign(mergedTranslationJson.translations, partialTranslationJson);
+  });
 
-        const mergedJson = langJsonMap.get(langCode);
-        Object.assign(mergedJson.translations, messageJson);
-    });
-
-    return langJsonMap;
+  return mergedTranslationsJsonMap;
 }
 
 /**
- * Saves all the translation files present in the language JSON map to the output folder
+ * Adds a prefix to the messages ids on the given translation JSON.
  *
- * @param langJsonMap Language JSON map
+ * @param translationJson JSON that will have the prefix added to
+ * @param translationFilePath Translation file path, used to extract the prefix
+ * @param idPrefixStrategy Id prefix strategy
+ */
+function addPrefixToTranslationMessageIds(translationJson, translationFilePath, idPrefixStrategy) {
+  const translationFileBaseName = getTranslationFileBaseName(translationFilePath);
+  for (const property in translationJson) {
+    Object.defineProperty(
+      translationJson,
+      buildMessageId(translationFileBaseName, idPrefixStrategy) + '.' + property,
+      Object.getOwnPropertyDescriptor(translationJson, property)
+    );
+    delete translationJson[property];
+  }
+}
+
+/**
+ * Saves the merged translation JSONs into files.
+ *
+ * @param mergedTranslationsJsonMap Map containing the language code and the merged translation json
  * @param outputFolder Output folder where the merged files will be saved
  */
-function saveToFiles(langJsonMap, outputFolder) {
-    fs.mkdirSync(outputFolder, {recursive: true});
+function saveMergedTranslationFiles(mergedTranslationsJsonMap, outputFolder) {
+  fs.mkdirSync(outputFolder, { recursive: true });
 
-    langJsonMap.forEach((json, language) => {
+  mergedTranslationsJsonMap.forEach((mergedTranslationJson, languageCode) => {
+    const mergedTranslationFilePath = outputFolder + `/messages.${languageCode}.json`;
+    const jsonStringifySpacesPrettyPrint = 2;
+    fs.writeFileSync(
+      mergedTranslationFilePath,
+      JSON.stringify(mergedTranslationJson, null, jsonStringifySpacesPrettyPrint)
+    );
 
-        const mergedFilePath = outputFolder + `/messages.${language}.json`;
-        fs.writeFileSync(mergedFilePath, JSON.stringify(json, null, 2));
-
-        console.log(`Merged translation file generated at: ${path.normalize(mergedFilePath)}`);
-    });
+    console.log(
+      `Merged translation file generated at: ${path.normalize(mergedTranslationFilePath)}`
+    );
+  });
 }
 
 /**
- * Builds key name
+ * Builds the message id.
  *
- * @param key Key name to transform
+ * @param baseFilename The base filename (e.g. component-one)
  * @param prefixStrategy Prefix strategy
- * @returns Key
+ * @returns Translation id
  */
-function buildKeyName(key, prefixStrategy) {
-    if (prefixStrategy === 'as-is') {
-        return changeCase.paramCase(key)
-    }
-    if (prefixStrategy === 'dot-case') {
-        return changeCase.dotCase(key)
-    }
-    return changeCase.camelCase(key)
+function buildMessageId(baseFilename, prefixStrategy) {
+  let messageId;
+  switch (prefixStrategy) {
+    case 'as-is':
+      messageId = baseFilename;
+      break;
+    case 'dot-case':
+      messageId = changeCase.dotCase(baseFilename);
+      break;
+    default:
+      messageId = changeCase.camelCase(baseFilename);
+  }
+
+  return messageId;
 }
 
 /**
- * Extracts name from the filename.
+ * Extracts the translation file base name from its full path.
  *
- * @param filename Filename
- * @returns File name
+ * e.g. .../some/path/component-one.messages.fr.json -> component-one
+ *
+ * @param translationFilePath Translation file path
+ * @returns Base name of the translation file
  */
-function getNameFromFilename(filename) {
-    const fullFilename = path.basename(filename)
-    return messagesNameRegex.exec(fullFilename)[0];
+function getTranslationFileBaseName(translationFilePath) {
+  const translationFilename = path.basename(translationFilePath);
+  return translationFileBaseNameRegex.exec(translationFilename)[1];
 }
 
 /**
  * Extracts the language code from the filename.
  *
+ * e.g. .../some/path/component-one.messages.fr.json -> fr
+ *
  * @param filename Filename
  * @returns Language code
  */
 function getLanguageCodeFromFilename(filename) {
-    return messagesFilenameRegex.exec(filename)[1];
+  return translationFileLanguageCodeRegex.exec(filename)[1];
 }
 
-module.exports = {merge};
+module.exports = { merge };
