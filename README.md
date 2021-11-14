@@ -26,8 +26,8 @@ file that can be difficult to maintain and can promote merge conflicts.
 
 ## Solution
 
-Angular i18n Merge Files is a tool that generates the final messages file (like the JSON above) by merging multiple
-partial message files.
+Angular i18n Merge Files is a tool that generates the final translation file (like the JSON above) by merging multiple
+partial translation files.
 
 **component-one.messages.fr.json**
 
@@ -66,7 +66,7 @@ npx ng-i18n-merge-files -f json
 
 ### Binding it to existing scripts
 
-This tool can be bind to automatically run before the scripts on package.json that requires the translation files:
+This tool can be bound to automatically run before the scripts on package.json that requires the translation files:
 
 **packages.json**
 
@@ -128,7 +128,7 @@ The naming strategy that will be applied to the translation filename to generate
 
 Example for message id `msg1` on file `component-one.messages.fr.json`:
 
-| Strategy   | sMessage id          |
+| Strategy   | Message id           |
 | ---------- | -------------------- |
 | camel-case | `componentOne.msg1`  |
 | as-is      | `component-one.msg2` |
