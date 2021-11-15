@@ -1,7 +1,7 @@
-const glob = require('glob');
-const fs = require('fs');
-const path = require('path');
-const changeCase = require('change-case');
+import glob from 'glob';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as changeCase from 'change-case';
 
 /**
  * Used to find the files to be merged.
@@ -35,7 +35,12 @@ const translationFileBaseNameRegex = /^(.*).messages./i;
  * @param idPrefix If a prefix based on the translation filename will be added to the translation keys
  * @param idPrefixStrategy Strategy to create the idPrefix
  */
-function merge(inputRootFolder, outputFolder, idPrefix, idPrefixStrategy) {
+export function merge(
+  inputRootFolder: string,
+  outputFolder: string,
+  idPrefix: string,
+  idPrefixStrategy: string
+): void {
   glob(inputRootFolder + translationFilenamesGlobPattern, {}, (err, translationFilePaths) => {
     if (err) {
       console.error(err);
@@ -67,8 +72,12 @@ function merge(inputRootFolder, outputFolder, idPrefix, idPrefixStrategy) {
  * @param idPrefixStrategy Strategy to create the idPrefix
  * @returns Map
  */
-function buildMergedTranslationsJsonMap(partialTranslationFilePaths, idPrefix, idPrefixStrategy) {
-  let mergedTranslationsJsonMap = new Map();
+function buildMergedTranslationsJsonMap(
+  partialTranslationFilePaths: string[],
+  idPrefix: string,
+  idPrefixStrategy: string
+): Map<string, any> {
+  const mergedTranslationsJsonMap = new Map<string, any>();
 
   partialTranslationFilePaths.forEach((partialTranslationFilePath) => {
     const partialTranslationFileContent = fs.readFileSync(partialTranslationFilePath, 'utf8');
@@ -106,13 +115,21 @@ function buildMergedTranslationsJsonMap(partialTranslationFilePaths, idPrefix, i
  * @param translationFilePath Translation file path, used to extract the prefix
  * @param idPrefixStrategy Id prefix strategy
  */
-function addPrefixToTranslationMessageIds(translationJson, translationFilePath, idPrefixStrategy) {
+function addPrefixToTranslationMessageIds(
+  translationJson: any,
+  translationFilePath: string,
+  idPrefixStrategy: string
+): void {
   const translationFileBaseName = getTranslationFileBaseName(translationFilePath);
+
   for (const property in translationJson) {
+    const prefixedMessageId =
+      buildMessageId(translationFileBaseName, idPrefixStrategy) + '.' + property;
+
     Object.defineProperty(
       translationJson,
-      buildMessageId(translationFileBaseName, idPrefixStrategy) + '.' + property,
-      Object.getOwnPropertyDescriptor(translationJson, property)
+      prefixedMessageId,
+      Object.getOwnPropertyDescriptor(translationJson, property)!
     );
     delete translationJson[property];
   }
@@ -124,7 +141,10 @@ function addPrefixToTranslationMessageIds(translationJson, translationFilePath, 
  * @param mergedTranslationsJsonMap Map containing the language code and the merged translation json
  * @param outputFolder Output folder where the merged files will be saved
  */
-function saveMergedTranslationFiles(mergedTranslationsJsonMap, outputFolder) {
+function saveMergedTranslationFiles(
+  mergedTranslationsJsonMap: Map<string, any>,
+  outputFolder: string
+): void {
   fs.mkdirSync(outputFolder, { recursive: true });
 
   mergedTranslationsJsonMap.forEach((mergedTranslationJson, languageCode) => {
@@ -148,7 +168,7 @@ function saveMergedTranslationFiles(mergedTranslationsJsonMap, outputFolder) {
  * @param prefixStrategy Prefix strategy
  * @returns Translation id
  */
-function buildMessageId(baseFilename, prefixStrategy) {
+function buildMessageId(baseFilename: string, prefixStrategy: string): string {
   let messageId;
   switch (prefixStrategy) {
     case 'as-is':
@@ -172,9 +192,9 @@ function buildMessageId(baseFilename, prefixStrategy) {
  * @param translationFilePath Translation file path
  * @returns Base name of the translation file
  */
-function getTranslationFileBaseName(translationFilePath) {
+function getTranslationFileBaseName(translationFilePath: string): string {
   const translationFilename = path.basename(translationFilePath);
-  return translationFileBaseNameRegex.exec(translationFilename)[1];
+  return translationFileBaseNameRegex.exec(translationFilename)![1];
 }
 
 /**
@@ -185,8 +205,8 @@ function getTranslationFileBaseName(translationFilePath) {
  * @param filename Filename
  * @returns Language code
  */
-function getLanguageCodeFromFilename(filename) {
-  return translationFileLanguageCodeRegex.exec(filename)[1];
+function getLanguageCodeFromFilename(filename: string): string {
+  return translationFileLanguageCodeRegex.exec(filename)![1];
 }
 
 module.exports = { merge };
