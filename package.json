@@ -11,7 +11,8 @@
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "prepare": "husky install"
   },
   "workspaces": [
     "./sample/*"
@@ -32,6 +33,8 @@
     "@types/glob": "^7.2.0",
     "@types/node": "^16.11.7",
     "@types/yargs": "^17.0.5",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.0.2",
     "prettier": "2.4.1",
     "typescript": "^4.4.4"
   }
