@@ -1,4 +1,13 @@
 # Based on https://github.com/github/gitignore/blob/master/Node.gitignore
+# https://docs.npmjs.com/misc/developers#keeping-files-out-of-your-package
+
+src/
+sample/
+*.md
+
+# Configuration
+.prettierrc.json
+tsconfig.json
 
 # Logs
 logs
@@ -19,9 +28,6 @@ pids
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
-
-# Dependency directories
-node_modules/
 
 # TypeScript cache
 *.tsbuildinfo
