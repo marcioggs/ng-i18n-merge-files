@@ -6,7 +6,7 @@ sample/
 *.md
 
 # Configuration
-.prettierrc.json
+.*
 tsconfig.json
 
 # Logs
