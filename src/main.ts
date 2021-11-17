@@ -15,9 +15,14 @@ if (!mergeStrategy) {
   process.exit(-1);
 }
 
-new MergeExecutor(mergeStrategy).merge(
-  args.inputRootFolder,
-  args.outputFolder,
-  args.idPrefix,
-  args.idPrefixStrategy
-);
+try {
+  new MergeExecutor(mergeStrategy).merge(
+    args.inputRootFolder,
+    args.outputFolder,
+    args.idPrefix,
+    args.idPrefixStrategy
+  );
+} catch (error) {
+  console.error(error);
+  process.exit(-1);
+}

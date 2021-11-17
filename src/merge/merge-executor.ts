@@ -88,9 +88,19 @@ export class MergeExecutor {
 
     partialTranslationFilePaths.forEach((partialTranslationFilePath) => {
       const partialTranslationFileContent = fs.readFileSync(partialTranslationFilePath, 'utf8');
-      let partialTranslationObject = this.mergerInterface.parseToObject(
-        partialTranslationFileContent
-      );
+
+      let partialTranslationObject: any;
+      try {
+        partialTranslationObject = this.mergerInterface.parseToObject(
+          partialTranslationFileContent
+        );
+      } catch (error: any) {
+        throw {
+          error: error.name,
+          message: error.message,
+          file: partialTranslationFilePath,
+        };
+      }
 
       if (idPrefix) {
         partialTranslationObject = this.addPrefixToMessageIds(
