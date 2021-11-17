@@ -1,15 +1,23 @@
 #!/usr/bin/env node
 
-import { getArgs } from './args';
-import * as jsonMerger from './json-merger';
+import { ArgumentsParser } from './arguments/arguments-parser';
+import { MergeExecutor } from './merge/merge-executor';
+import { MergeStrategyFactory } from './merge/strategies/merge-strategy-factory';
 
-const args = getArgs();
+const args = new ArgumentsParser().parse(process.argv, process.cwd());
 
-if (args.format === 'json') {
-  jsonMerger.merge(args.in, args.out, args['id-prefix'], args['id-prefix-strategy']);
-} else {
-  // TODO: Implement mergers for formats described at https://angular.io/guide/i18n-common-translation-files#change-the-source-language-file-format.
+let mergeStrategy = new MergeStrategyFactory().getStrategy(args.format);
+
+if (!mergeStrategy) {
   console.error(
     `Format '${args.format}' is not implemented. Support the community by sending a pull request.`
   );
+  process.exit(-1);
 }
+
+new MergeExecutor(mergeStrategy).merge(
+  args.inputRootFolder,
+  args.outputFolder,
+  args.idPrefix,
+  args.idPrefixStrategy
+);
