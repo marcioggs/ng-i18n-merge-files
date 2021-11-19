@@ -1,5 +1,5 @@
 {
-  "name": "test-app",
+  "name": "json-sample-app",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

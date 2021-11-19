@@ -144,4 +144,4 @@ messages.*.json
 
 ## Sample project
 
-Can be found at the [sample/test-app](./sample/test-app) folder.
+Can be found at the [sample/test-app](./sample/json-sample-app) folder.
