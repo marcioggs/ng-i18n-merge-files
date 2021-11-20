@@ -1,0 +1,74 @@
+{
+  "htmlAttribute": "Texto do Componente Um em atributo HTML",
+  "@htmlAttribute": {
+    "description": "Text for HTML title of Component One",
+    "x-meaning": "one html title",
+    "x-locations": [
+      {
+        "file": "src\\app\\component-one\\component-one.component.html",
+        "start": {
+          "line": "3",
+          "column": "9"
+        },
+        "end": {
+          "line": "3",
+          "column": "45"
+        }
+      }
+    ]
+  },
+  "htmlComponent": "Texto do Componente Um em componente HTML",
+  "@htmlComponent": {
+    "description": "Text for HTML of Component One",
+    "x-meaning": "one html component",
+    "x-locations": [
+      {
+        "file": "src\\app\\component-one\\component-one.component.html",
+        "start": {
+          "line": "4",
+          "column": "1"
+        },
+        "end": {
+          "line": "6",
+          "column": "0"
+        }
+      }
+    ]
+  },
+  "tsVar": "Texto do Componente Um em variável TypeScript",
+  "@tsVar": {
+    "description": "Text for TypeScript variable of Component One",
+    "x-meaning": "one ts var",
+    "x-locations": [
+      {
+        "file": "src\\app\\component-one\\component-one.component.ts",
+        "start": {
+          "line": "8",
+          "column": "18"
+        },
+        "end": {
+          "line": "8",
+          "column": "139"
+        }
+      }
+    ]
+  },
+  "interpolatedTsVar": "Esse texto é de uma variável interpolada do Componente Um: '{$varToInterpolate}'",
+  "@interpolatedTsVar": {
+    "description": "Text for TypeScript variable of Component One with interpolated text",
+    "x-meaning": "component one interpolated text",
+    "x-locations": [
+      {
+        "file": "src\\app\\component-one\\component-one.component.ts",
+        "start": {
+          "line": "10",
+          "column": "30"
+        },
+        "end": {
+          "line": "10",
+          "column": "271"
+        }
+      }
+    ]
+  }
+}

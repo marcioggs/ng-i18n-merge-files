@@ -5,9 +5,8 @@
 [npm-url]: https://npmjs.org/package/ng-i18n-merge-files
 [npm-version-image]: https://img.shields.io/npm/v/ng-i18n-merge-files.svg?style=flat
 
-Simplify the maintenance of the translation messages of an Angular application by splitting them into
-multiple files.  
-Currently, JSON, XLIFF 1.2 and XLIFF 2.0 formats are supported.
+Simplify the maintenance of the translation messages of an Angular application by splitting them into multiple files.  
+Currently, JSON, XLIFF 1.2, XLIFF 2.0 and ARB formats are supported.
 
 ## Without this tool
 
@@ -51,13 +50,13 @@ partial translation files.
 }
 ```
 
-The name of files to be merged must have the suffix `.messages.[language-code].[format-extension]` and this tool will automatically
-merge them in the final translation file.
+The name of files to be merged must have the suffix `.messages.[language-code].[format-extension]` and this tool will
+automatically merge them in the final translation file.
 
 ## Partial translation file structure
 
-To avoid duplicating header data on the multiple files, this tools expects a reduced version of the structure expected by
-Angular.
+To avoid duplicating header data on the multiple files, this tools expects a reduced version of the structure expected
+by Angular.
 
 ### JSON
 
@@ -67,6 +66,9 @@ Angular.
 }
 ```
 
+<details>
+  <summary>Show other formats</summary>
+
 ### XLIFF 1.2
 
 The full XLIFF's schema for the `body.trans-unit` element is supported.
@@ -74,14 +76,14 @@ The full XLIFF's schema for the `body.trans-unit` element is supported.
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <body xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <trans-unit id="msg1" datatype="html">
-    <source>Message 1</source>
-    <target>Mensagem 1</target>
-    <context-group purpose="location">
-      <context context-type="sourcefile">src/app/component-name.component.html</context>
-      <context context-type="linenumber">4</context>
-    </context-group>
-  </trans-unit>
+    <trans-unit id="msg1" datatype="html">
+        <source>Message 1</source>
+        <target>Mensagem 1</target>
+        <context-group purpose="location">
+            <context context-type="sourcefile">src/app/component-name.component.html</context>
+            <context context-type="linenumber">4</context>
+        </context-group>
+    </trans-unit>
 </body>
 ```
 
@@ -102,8 +104,34 @@ The full XLIFF's schema for the `file.unit` element is supported.
         </segment>
     </unit>
 </file>
-
 ```
+
+### ARB
+
+The full ARB's schema for the meta (`@`) attributes is supported.
+
+```json
+{
+  "msg1": "Mensagem 1",
+  "@msg1": {
+    "x-locations": [
+      {
+        "file": "src\\app\\component-name.component.html",
+        "start": {
+          "line": "0",
+          "column": "69"
+        },
+        "end": {
+          "line": "0",
+          "column": "93"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
 
 ## Generating the merged file
 
@@ -113,7 +141,8 @@ Install the NPM package for this tool:
 npm install --save-dev ng-i18n-merge-files
 ```
 
-And run the following command, which will generate the merged files under `src/locale/messages.[language-code].[format-extension]`:
+And run the following command, which will generate the merged files
+under `src/locale/messages.[language-code].[format-extension]`:
 
 ```
 npx ng-i18n-merge-files -f [format]
@@ -148,7 +177,7 @@ Options:
   -o, --out                        Folder where the merged translation files will be saved to.
                                    [string] [default: "{current working dir}\src\locale"]
   -f, --format                     Format of the translation file.
-                                   [required] [choices: "json", "xlf", "xlf2"]
+                                   [required] [choices: "arb", "json", "xlf", "xlf2"]
       --id-prefix, --ip            Adds a prefix to the translation identifier based on the translation filename (see
                                    --id-prefix-strategy)
                                    [boolean] [default: false]
@@ -194,6 +223,7 @@ Example for message id `msg1` on file `component-one.messages.pt.json`:
 Add the line corresponding to the format being used to avoid committing the generated merged files.
 
 ```.gitignore
+messages.*.arb
 messages.*.json
 messages.*.xlf
 ```

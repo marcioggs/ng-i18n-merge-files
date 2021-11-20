@@ -2,10 +2,10 @@ import { MergeStrategy } from './merge-strategy';
 import convert, { Element } from 'xml-js';
 
 /**
- * Strategy for merging translation files of type XLIFF 1.2.
+ * Strategy for merging translation files of type XLIFF 2.0.
  */
 export class Xliff20MergeStrategy implements MergeStrategy<Element> {
-  extension = 'xlf';
+  readonly extension = 'xlf';
 
   parseToObject(fileContent: string): Element {
     return convert.xml2js(fileContent) as Element;

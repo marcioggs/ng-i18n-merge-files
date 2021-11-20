@@ -1,0 +1,20 @@
+{
+  "message": "Esta é uma mensagem compartilhada",
+  "@message": {
+    "description": "Text for the shared message",
+    "x-meaning": "shared message",
+    "x-locations": [
+      {
+        "file": "src\\app\\app.component.html",
+        "start": {
+          "line": "0",
+          "column": "69"
+        },
+        "end": {
+          "line": "0",
+          "column": "93"
+        }
+      }
+    ]
+  }
+}

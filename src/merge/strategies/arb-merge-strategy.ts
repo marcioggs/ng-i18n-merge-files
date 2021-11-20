@@ -1,26 +1,31 @@
 import { MergeStrategy } from './merge-strategy';
 
 /**
- * Strategy for merging translation files of type JSON.
+ * Strategy for merging translation files of type ARB (Application Resource Bundle).
  */
-export class JsonMergeStrategy implements MergeStrategy<Object> {
-  readonly extension = 'json';
+export class ArbMergeStrategy implements MergeStrategy<Object> {
+  readonly extension = 'arb';
+  private readonly metaAttributeCharacter = '@';
 
   parseToObject(fileContent: string): Object {
     return JSON.parse(fileContent);
   }
 
   addPrefixToMessageIds(translationObject: Object, prefix: string, separator: string): Object {
-    for (const messageId in translationObject) {
-      const prefixedMessageId = prefix + separator + messageId;
+    for (const propertyId in translationObject) {
+      const isMetaAttribute = propertyId.startsWith(this.metaAttributeCharacter);
+      const messageId = isMetaAttribute ? propertyId.substring(1) : propertyId;
+
+      const prefixedMessageId =
+        (isMetaAttribute ? this.metaAttributeCharacter : '') + prefix + separator + messageId;
 
       Object.defineProperty(
         translationObject,
         prefixedMessageId,
-        Object.getOwnPropertyDescriptor(translationObject, messageId)!
+        Object.getOwnPropertyDescriptor(translationObject, propertyId)!
       );
       // @ts-ignore
-      delete translationObject[messageId];
+      delete translationObject[propertyId];
     }
 
     return translationObject;
@@ -28,12 +33,11 @@ export class JsonMergeStrategy implements MergeStrategy<Object> {
 
   mergeObjects(languageCode: string, partialTranslationObjects: Object[]): Object {
     const mergedJson = {
-      locale: languageCode,
-      translations: {},
+      '@@locale': languageCode,
     };
 
     partialTranslationObjects.forEach((partialTranslationObject) => {
-      Object.assign(mergedJson.translations, partialTranslationObject);
+      Object.assign(mergedJson, partialTranslationObject);
     });
 
     return mergedJson;
