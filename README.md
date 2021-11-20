@@ -7,7 +7,7 @@
 
 Simplify the maintenance of the translation messages of an Angular application by splitting them into
 multiple files.  
-Currently, JSON and XLIFF 1.2 formats are supported.
+Currently, JSON, XLIFF 1.2 and XLIFF 2.0 formats are supported.
 
 ## Without this tool
 
@@ -76,13 +76,33 @@ The full XLIFF's schema for the `body.trans-unit` element is supported.
 <body xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <trans-unit id="msg1" datatype="html">
     <source>Message 1</source>
-    <target>Message 1</target>
+    <target>Mensagem 1</target>
     <context-group purpose="location">
       <context context-type="sourcefile">src/app/component-name.component.html</context>
       <context context-type="linenumber">4</context>
     </context-group>
   </trans-unit>
 </body>
+```
+
+### XLIFF 2.0
+
+The full XLIFF's schema for the `file.unit` element is supported.
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<file id="ngi18n" xmlns="urn:oasis:names:tc:xliff:document:2.0">
+    <unit id="msg1">
+        <notes>
+            <note category="location">src/app/component-name.component.html:1</note>
+        </notes>
+        <segment>
+            <source>Message 1</source>
+            <target>Mensagem 1</target>
+        </segment>
+    </unit>
+</file>
+
 ```
 
 ## Generating the merged file
@@ -128,7 +148,7 @@ Options:
   -o, --out                        Folder where the merged translation files will be saved to.
                                    [string] [default: "{current working dir}\src\locale"]
   -f, --format                     Format of the translation file.
-                                   [required] [choices: "json", "xlf"]
+                                   [required] [choices: "json", "xlf", "xlf2"]
       --id-prefix, --ip            Adds a prefix to the translation identifier based on the translation filename (see
                                    --id-prefix-strategy)
                                    [boolean] [default: false]
@@ -141,7 +161,7 @@ Options:
 ### id-prefix
 
 If set, a prefix will be added to the translation message id based on the translation filename.  
-The same two JSON files from the previous examples would be merged into:
+The same two JSON files from the initial examples would be merged into:
 
 ```json
 {

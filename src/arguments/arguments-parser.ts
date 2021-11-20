@@ -27,7 +27,7 @@ export class ArgumentsParser {
         format: {
           description: 'Format of the translation file.',
           alias: 'f',
-          choices: ['json', 'xlf'],
+          choices: ['json', 'xlf', 'xlf2'],
           demandOption: true,
         },
         'id-prefix': {
