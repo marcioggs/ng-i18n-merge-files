@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<body xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <trans-unit id="message" datatype="html">
+    <source>This is a shared message</source>
+    <target>Ceci est un message partagé</target>
+    <context-group purpose="location">
+      <context context-type="sourcefile">src/app/app.component.html</context>
+      <context context-type="linenumber">1</context>
+    </context-group>
+    <note priority="1" from="description">Text for the shared message</note>
+    <note priority="1" from="meaning">shared message</note>
+  </trans-unit>
+</body>
