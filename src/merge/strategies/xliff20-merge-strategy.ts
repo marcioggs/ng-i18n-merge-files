@@ -4,7 +4,7 @@ import convert, { Element } from 'xml-js';
 /**
  * Strategy for merging translation files of type XLIFF 1.2.
  */
-export class Xliff12MergeStrategy implements MergeStrategy<Element> {
+export class Xliff20MergeStrategy implements MergeStrategy<Element> {
   extension = 'xlf';
 
   parseToObject(fileContent: string): Element {
@@ -12,17 +12,17 @@ export class Xliff12MergeStrategy implements MergeStrategy<Element> {
   }
 
   addPrefixToMessageIds(translationObject: Element, prefix: string, separator: string): Element {
-    const body = translationObject.elements?.find((element) => element.name === 'body');
-    if (!body) {
+    const file = translationObject.elements?.find((element) => element.name === 'file');
+    if (!file) {
       return translationObject;
     }
-    const transUnits = body.elements?.filter((element) => element.name === 'trans-unit');
+    const units = file.elements?.filter((element) => element.name === 'unit');
 
-    if (!transUnits) {
+    if (!units) {
       return translationObject;
     }
 
-    transUnits.forEach((transUnit) => {
+    units.forEach((transUnit) => {
       if (!transUnit.attributes) {
         return;
       }
@@ -35,22 +35,21 @@ export class Xliff12MergeStrategy implements MergeStrategy<Element> {
   mergeObjects(languageCode: string, partialTranslationObjects: Element[]): Element {
     const mergedObject: Element = this.getBaseMergedObject(languageCode);
 
-    const file = mergedObject.elements![0].elements!.find((element) => element.name === 'file');
-    const body = file!.elements!.find((element) => element.name === 'body')!;
-    body.elements = [];
+    const file = mergedObject.elements![0].elements!.find((element) => element.name === 'file')!;
+    file.elements = [];
 
     partialTranslationObjects.forEach((partialTranslationObject) => {
-      const partialBody = partialTranslationObject.elements?.find(
-        (element) => element.name === 'body'
+      const partialFile = partialTranslationObject.elements?.find(
+        (element) => element.name === 'file'
       );
-      if (!partialBody) {
+      if (!partialFile) {
         return;
       }
-      const transUnits = partialBody.elements?.filter((element) => element.name === 'trans-unit');
-      if (!transUnits) {
+      const units = partialFile.elements?.filter((element) => element.name === 'unit');
+      if (!units) {
         return;
       }
-      body.elements?.push(...transUnits);
+      file.elements?.push(...units);
     });
 
     return mergedObject;
@@ -59,12 +58,10 @@ export class Xliff12MergeStrategy implements MergeStrategy<Element> {
   private getBaseMergedObject(languageCode: string): Element {
     return convert.xml2js(
       `<?xml version="1.0" encoding="UTF-8" ?>
-        <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-          <file source-language="${languageCode}" datatype="plaintext" original="ng2.template">
-            <body>
-            </body>
-          </file>
-        </xliff>`
+      <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="${languageCode}">
+        <file id="ngi18n" original="ng.template">
+        </file>
+      </xliff>`
     ) as Element;
   }
 
