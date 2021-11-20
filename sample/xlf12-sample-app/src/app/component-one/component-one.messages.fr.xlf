@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<body xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <trans-unit id="htmlAttribute" datatype="html">
+    <source>Component One text in HTML attribute</source>
+    <target>Texte du Composant Un dans l'attribut HTML</target>
+    <context-group purpose="location">
+      <context context-type="sourcefile">src/app/component-one/component-one.component.html</context>
+      <context context-type="linenumber">4</context>
+    </context-group>
+    <note priority="1" from="description">Text for HTML title of Component One</note>
+    <note priority="1" from="meaning">one html title</note>
+  </trans-unit>
+  <trans-unit id="htmlComponent" datatype="html">
+    <source>Component One text in HTML component
+    </source>
+    <target>Texte du Composant Un dans le composant HTML</target>
+    <context-group purpose="location">
+      <context context-type="sourcefile">src/app/component-one/component-one.component.html</context>
+      <context context-type="linenumber">5,7</context>
+    </context-group>
+    <note priority="1" from="description">Text for HTML of Component One</note>
+    <note priority="1" from="meaning">one html component</note>
+  </trans-unit>
+  <trans-unit id="tsVar" datatype="html">
+    <source>Component One text in TypeScript variable</source>
+    <target>Texte du Composant Un dans la variable TypeScript</target>
+    <context-group purpose="location">
+      <context context-type="sourcefile">src/app/component-one/component-one.component.ts</context>
+      <context context-type="linenumber">9</context>
+    </context-group>
+    <note priority="1" from="description">Text for TypeScript variable of Component One</note>
+    <note priority="1" from="meaning">one ts var</note>
+  </trans-unit>
+  <trans-unit id="interpolatedTsVar" datatype="html">
+    <source>This text is from an interpolated variable of Component One: &apos;<x id="varToInterpolate"
+                                                                                  equiv-text="this.varToInterpolate"/>&apos;
+    </source>
+    <target>Ce texte est issu d'une variable interpolée du Composant Un: &apos;<x id="varToInterpolate"
+                                                                                              equiv-text="this.varToInterpolate"/>&apos;</target>
+    <context-group purpose="location">
+      <context context-type="sourcefile">src/app/component-one/component-one.component.ts</context>
+      <context context-type="linenumber">11</context>
+    </context-group>
+    <note priority="1" from="description">Text for TypeScript variable of Component One with interpolated text</note>
+    <note priority="1" from="meaning">component one interpolated text</note>
+  </trans-unit>
+</body>

@@ -25,9 +25,9 @@ export class ArgumentsParser {
           type: 'string',
         },
         format: {
-          description: 'Format of the translation file. Currently only json is supported.',
+          description: 'Format of the translation file.',
           alias: 'f',
-          choices: ['json'],
+          choices: ['json', 'xlf'],
           demandOption: true,
         },
         'id-prefix': {
