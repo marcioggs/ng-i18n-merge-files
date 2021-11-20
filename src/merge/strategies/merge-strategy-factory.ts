@@ -2,6 +2,7 @@ import { MergeStrategy } from './merge-strategy';
 import { JsonMergeStrategy } from './json-merge-strategy';
 import { Xliff12MergeStrategy } from './xliff12-merge-strategy';
 import { Xliff20MergeStrategy } from './xliff20-merge-strategy';
+import { ArbMergeStrategy } from './arb-merge-strategy';
 
 /**
  * Resolves the merger strategy class for the given translation file format.
@@ -11,6 +12,9 @@ export class MergeStrategyFactory {
     let mergeStrategy: MergeStrategy<any> | undefined;
 
     switch (format) {
+      case 'arb':
+        mergeStrategy = new ArbMergeStrategy();
+        break;
       case 'json':
         mergeStrategy = new JsonMergeStrategy();
         break;

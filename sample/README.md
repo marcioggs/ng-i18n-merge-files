@@ -12,6 +12,8 @@ them being the translation file format.
 Contains the script to merge the files (`i18n:merge-files`), which is bound to the scripts that requires the merged
 translation files (`build` and `start:[language-code]`).
 
+Also contains the path to the generated merged files (at `i18n.locales`).
+
 ### Partial translation files
 
 The files that will be merged can be found in the following folders:
