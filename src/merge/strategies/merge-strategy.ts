@@ -50,7 +50,7 @@ export interface MergeStrategy<ObjectRepresentation> {
    * Parses the final object representation to a string, which will be used to write the final translation file.
    * This method will be called once per language found.
    *
-   * @param mergedObjects Merged objects
+   * @param mergedObject Merged object
    */
-  objectToString(mergedObjects: ObjectRepresentation): string;
+  objectToString(mergedObject: ObjectRepresentation): string;
 }

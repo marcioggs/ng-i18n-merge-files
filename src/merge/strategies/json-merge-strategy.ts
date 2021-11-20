@@ -6,7 +6,7 @@ import { MergeStrategy } from './merge-strategy';
 export class JsonMergeStrategy implements MergeStrategy<Object> {
   extension = 'json';
 
-  parseToObject(fileContent: string): any {
+  parseToObject(fileContent: string): Object {
     return JSON.parse(fileContent);
   }
 
@@ -39,8 +39,8 @@ export class JsonMergeStrategy implements MergeStrategy<Object> {
     return mergedJson;
   }
 
-  objectToString(mergedObjects: Object): string {
+  objectToString(mergedObject: Object): string {
     const jsonStringifySpacesPrettyPrint = 2;
-    return JSON.stringify(mergedObjects, null, jsonStringifySpacesPrettyPrint);
+    return JSON.stringify(mergedObject, null, jsonStringifySpacesPrettyPrint);
   }
 }

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "test-app": {
+    "json-sample-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -24,7 +24,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/test-app",
+            "outputPath": "dist/json-sample-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -81,19 +81,19 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "test-app:build:production"
+              "browserTarget": "json-sample-app:build:production"
             },
             "development": {
-              "browserTarget": "test-app:build:development"
+              "browserTarget": "json-sample-app:build:development"
             },
             "en": {
-              "browserTarget": "test-app:build:en"
+              "browserTarget": "json-sample-app:build:en"
             },
             "fr": {
-              "browserTarget": "test-app:build:fr"
+              "browserTarget": "json-sample-app:build:fr"
             },
             "pt": {
-              "browserTarget": "test-app:build:pt"
+              "browserTarget": "json-sample-app:build:pt"
             }
           },
           "defaultConfiguration": "development"
@@ -101,7 +101,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "test-app:build"
+            "browserTarget": "json-sample-app:build"
           }
         },
         "test": {
@@ -119,5 +119,5 @@
       }
     }
   },
-  "defaultProject": "test-app"
+  "defaultProject": "json-sample-app"
 }
