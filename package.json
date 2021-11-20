@@ -21,7 +21,8 @@
   "keywords": [
     "angular",
     "i18n",
-    "translation"
+    "translation",
+    "internationalization"
   ],
   "author": "Márcio Gabriel",
   "license": "ISC",
