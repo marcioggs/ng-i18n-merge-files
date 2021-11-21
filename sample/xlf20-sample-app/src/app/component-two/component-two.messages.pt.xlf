@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<file id="ngi18n" xmlns="urn:oasis:names:tc:xliff:document:2.0">
+  <unit id="htmlAttribute">
+    <notes>
+      <note category="location">src/app/component-two/component-two.component.html:4</note>
+      <note category="description">Text for HTML title of Component Two</note>
+      <note category="meaning">two html title</note>
+    </notes>
+    <segment>
+      <source>Component Two text in HTML attribute</source>
+      <target>Texto do Componente Dois em atributo HTML</target>
+    </segment>
+  </unit>
+  <unit id="htmlComponent">
+    <notes>
+      <note category="location">src/app/component-two/component-two.component.html:5,7</note>
+      <note category="description">Text for HTML of Component Two</note>
+      <note category="meaning">two html component</note>
+    </notes>
+    <segment>
+      <source>Component Two text in HTML component
+      </source>
+      <target>Texto do Componente Dois em componente HTML</target>
+    </segment>
+  </unit>
+  <unit id="tsVar">
+    <notes>
+      <note category="location">src/app/component-two/component-two.component.ts:9</note>
+      <note category="description">Text for TypeScript variable of Component Two</note>
+      <note category="meaning">two ts var</note>
+    </notes>
+    <segment>
+      <source>Component Two text in TypeScript variable</source>
+      <target>Texto do Componente Dois em variável TypeScript</target>
+    </segment>
+  </unit>
+  <unit id="interpolatedTsVar">
+    <notes>
+      <note category="location">src/app/component-two/component-two.component.ts:11</note>
+      <note category="description">Text for TypeScript variable of Component Two with interpolated text</note>
+      <note category="meaning">component two interpolated text</note>
+    </notes>
+    <segment>
+      <source>This text is from an interpolated variable of Component Two: &apos;<ph id="0" equiv="varToInterpolate"
+                                                                                     disp="this.varToInterpolate"/>&apos;
+      </source>
+      <target>Esse texto é de uma variável interpolada do Componente Dois: &apos;<ph id="0" equiv="varToInterpolate"
+                                                                                     disp="this.varToInterpolate"/>&apos;
+      </target>
+    </segment>
+  </unit>
+</file>
+

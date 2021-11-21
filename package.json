@@ -1,7 +1,7 @@
 {
   "name": "ng-i18n-merge-files",
-  "version": "1.2.0",
-  "description": "Merges multiple Angular localization files into a single file.",
+  "version": "1.3.0",
+  "description": "Simplify the maintenance of the translation messages of an Angular application by splitting them into multiple files.",
   "homepage": "https://github.com/marcioggs/ng-i18n-merge-files#readme",
   "bugs": "https://github.com/marcioggs/ng-i18n-merge-files/issues",
   "repository": "https://github.com/marcioggs/ng-i18n-merge-files.git",
@@ -21,7 +21,8 @@
   "keywords": [
     "angular",
     "i18n",
-    "translation"
+    "translation",
+    "internationalization"
   ],
   "author": "Márcio Gabriel",
   "license": "ISC",

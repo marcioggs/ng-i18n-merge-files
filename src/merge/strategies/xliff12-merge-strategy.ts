@@ -5,7 +5,7 @@ import convert, { Element } from 'xml-js';
  * Strategy for merging translation files of type XLIFF 1.2.
  */
 export class Xliff12MergeStrategy implements MergeStrategy<Element> {
-  extension = 'xlf';
+  readonly extension = 'xlf';
 
   parseToObject(fileContent: string): Element {
     return convert.xml2js(fileContent) as Element;
@@ -57,13 +57,15 @@ export class Xliff12MergeStrategy implements MergeStrategy<Element> {
   }
 
   private getBaseMergedObject(languageCode: string): Element {
-    return convert.xml2js(`<?xml version="1.0" encoding="UTF-8" ?>
+    return convert.xml2js(
+      `<?xml version="1.0" encoding="UTF-8" ?>
         <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
           <file source-language="${languageCode}" datatype="plaintext" original="ng2.template">
             <body>
             </body>
           </file>
-        </xliff>`) as Element;
+        </xliff>`
+    ) as Element;
   }
 
   objectToString(mergedObject: Element): string {

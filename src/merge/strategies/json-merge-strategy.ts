@@ -4,7 +4,7 @@ import { MergeStrategy } from './merge-strategy';
  * Strategy for merging translation files of type JSON.
  */
 export class JsonMergeStrategy implements MergeStrategy<Object> {
-  extension = 'json';
+  readonly extension = 'json';
 
   parseToObject(fileContent: string): Object {
     return JSON.parse(fileContent);

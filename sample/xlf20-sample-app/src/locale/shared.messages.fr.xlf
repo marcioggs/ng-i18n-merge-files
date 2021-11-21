@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<file id="ngi18n" xmlns="urn:oasis:names:tc:xliff:document:2.0">
+  <unit id="message">
+    <notes>
+      <note category="location">src/app/app.component.html:1</note>
+      <note category="description">Text for the shared message</note>
+      <note category="meaning">shared message</note>
+    </notes>
+    <segment>
+      <source>This is a shared message</source>
+      <target>Ceci est un message partagé</target>
+    </segment>
+  </unit>
+</file>

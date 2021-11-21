@@ -1,6 +1,6 @@
 # Sample applications
 
-In this folder you'll find sample applications for each of the supported formats.
+In this folder, you'll find sample applications for each of the supported formats.
 
 All the applications have the same structure, being translated to French and Portuguese, and the only difference between 
 them being the translation file format.
@@ -9,8 +9,10 @@ them being the translation file format.
 
 ### package.json
 
-Contains the script to merge the files (`i18n:merge-files`), which is bound to the scripts that requires the merged
+Contains the script to merge the files (`i18n:merge-files`), which is bound to the scripts that require the merged
 translation files (`build` and `start:[language-code]`).
+
+Also contains the path to the generated merged files (at `i18n.locales`).
 
 ### Partial translation files
 
@@ -36,15 +38,15 @@ e.g. `messages.pt.json`
 The following commands should be run from the main project's root folder, and they automatically merge the
 translation files before building or starting the application. 
 
-Change `json-sample-app` by application name corresponding to the desired format.
+Change `json-sample-app` by the application name corresponding to the desired format.
 
 ```shell
 npm install --workspaces                        # Installs dependencies for all apps
 
 npm run build --workspaces                      # Merges files and builds all apps
 
-npm run start:fr --workspace json-sample-app   # Merges files and starts the chosen app in French 
-npm run start:pt --workspace json-sample-app   # Merges files and starts the chosen app in Portuguese
+npm run start:fr --workspace json-sample-app    # Merges files and starts the chosen app in French 
+npm run start:pt --workspace json-sample-app    # Merges files and starts the chosen app in Portuguese
 
 npm run i18n:merge-files --workspaces           # Just merge the files for all apps
 ```
