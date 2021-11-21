@@ -6,12 +6,10 @@ import { MergeStrategyFactory } from './merge/strategies/merge-strategy-factory'
 
 const args = new ArgumentsParser().parse(process.argv, process.cwd());
 
-let mergeStrategy = new MergeStrategyFactory().getStrategy(args.format);
+const mergeStrategy = new MergeStrategyFactory().getStrategy(args.format);
 
 if (!mergeStrategy) {
-  console.error(
-    `Format '${args.format}' is not implemented. Support the community by sending a pull request.`
-  );
+  console.error(`Format '${args.format}' is unknown.`);
   process.exit(-1);
 }
 

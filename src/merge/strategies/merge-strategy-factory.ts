@@ -3,6 +3,7 @@ import { JsonMergeStrategy } from './json-merge-strategy';
 import { Xliff12MergeStrategy } from './xliff12-merge-strategy';
 import { Xliff20MergeStrategy } from './xliff20-merge-strategy';
 import { ArbMergeStrategy } from './arb-merge-strategy';
+import { XtbMergeStrategy } from './xtb-merge-strategy';
 
 /**
  * Resolves the merger strategy class for the given translation file format.
@@ -24,7 +25,8 @@ export class MergeStrategyFactory {
       case 'xlf2':
         mergeStrategy = new Xliff20MergeStrategy();
         break;
-      // TODO: Implement mergers for formats described at https://angular.io/guide/i18n-common-translation-files#change-the-source-language-file-format.
+      case 'xtb':
+        mergeStrategy = new XtbMergeStrategy();
     }
 
     return mergeStrategy;

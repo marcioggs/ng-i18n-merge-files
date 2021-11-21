@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE translationbundle [
+  <!ELEMENT translationbundle (translation)*>
+  <!ATTLIST translationbundle lang CDATA #IMPLIED>
+
+  <!ELEMENT translation (#PCDATA|ph)*>
+  <!ATTLIST translation id CDATA #REQUIRED>
+  <!ATTLIST translation desc CDATA #IMPLIED>
+  <!ATTLIST translation meaning CDATA #IMPLIED>
+  <!ATTLIST translation xml:space (default|preserve) "default">
+
+  <!ELEMENT ph (#PCDATA|ex)*>
+  <!ATTLIST ph name CDATA #REQUIRED>
+
+  <!ELEMENT ex (#PCDATA)>
+  ]>
+<translationbundle>
+  <translation id="htmlAttribute" desc="Text for HTML title of Component One" meaning="one html title">
+    Texte du Composant Un dans l'attribut HTML
+  </translation>
+  <translation id="htmlComponent" desc="Text for HTML of Component One" meaning="one html component">
+    Texte du Composant Un dans le composant HTML
+  </translation>
+  <translation id="tsVar" desc="Text for TypeScript variable of Component One" meaning="one ts var">
+    Texte du Composant Un dans la variable TypeScript
+  </translation>
+  <translation id="interpolatedTsVar"
+               desc="Text for TypeScript variable of Component One with interpolated text"
+               meaning="component one interpolated text">This text is from an interpolated variable of Component One:
+    &apos;<ph name="varToInterpolate"/>&apos;
+  </translation>
+</translationbundle>

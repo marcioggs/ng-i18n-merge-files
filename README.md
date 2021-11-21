@@ -6,7 +6,8 @@
 [npm-version-image]: https://img.shields.io/npm/v/ng-i18n-merge-files.svg?style=flat
 
 Simplify the maintenance of the translation messages of an Angular application by splitting them into multiple files.  
-Currently, JSON, XLIFF 1.2, XLIFF 2.0 and ARB formats are supported.
+This tool supports all the translation file formats accepted by Angular (ARB, JSON, XLIFF 1.2, XLIFF 2.0, and XTB (XMB))
+.
 
 ## Without this tool
 
@@ -69,6 +70,31 @@ by Angular.
 <details>
   <summary>Show other formats</summary>
 
+### ARB
+
+The full ARB's schema for the meta (`@`) attributes is supported.
+
+```json
+{
+  "msg1": "Mensagem 1",
+  "@msg1": {
+    "x-locations": [
+      {
+        "file": "src\\app\\component-name.component.html",
+        "start": {
+          "line": "0",
+          "column": "69"
+        },
+        "end": {
+          "line": "0",
+          "column": "93"
+        }
+      }
+    ]
+  }
+}
+```
+
 ### XLIFF 1.2
 
 The full XLIFF's schema for the `body.trans-unit` element is supported.
@@ -106,30 +132,33 @@ The full XLIFF's schema for the `file.unit` element is supported.
 </file>
 ```
 
-### ARB
+### XTB (XMB)
 
-The full ARB's schema for the meta (`@`) attributes is supported.
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE translationbundle [
+        <!ELEMENT translationbundle (translation)*>
+        <!ATTLIST translationbundle lang CDATA #IMPLIED>
 
-```json
-{
-  "msg1": "Mensagem 1",
-  "@msg1": {
-    "x-locations": [
-      {
-        "file": "src\\app\\component-name.component.html",
-        "start": {
-          "line": "0",
-          "column": "69"
-        },
-        "end": {
-          "line": "0",
-          "column": "93"
-        }
-      }
-    ]
-  }
-}
+        <!ELEMENT translation (#PCDATA|ph)*>
+        <!ATTLIST translation id CDATA #REQUIRED>
+        <!ATTLIST translation desc CDATA #IMPLIED>
+        <!ATTLIST translation meaning CDATA #IMPLIED>
+        <!ATTLIST translation xml:space (default|preserve) "default">
+
+        <!ELEMENT ph (#PCDATA|ex)*>
+        <!ATTLIST ph name CDATA #REQUIRED>
+
+        <!ELEMENT ex (#PCDATA)>
+        ]>
+<translationbundle>
+    <translation id="msg1">
+        Mensagem 1
+    </translation>
+</translationbundle>
 ```
+
+The `DOCTYPE` can be omitted for simplicity at the cost of losing validation and auto-completion in the IDE.
 
 </details>
 
@@ -177,7 +206,7 @@ Options:
   -o, --out                        Folder where the merged translation files will be saved to.
                                    [string] [default: "{current working dir}\src\locale"]
   -f, --format                     Format of the translation file.
-                                   [required] [choices: "arb", "json", "xlf", "xlf2"]
+                                   [required] [choices: "arb", "json", "xlf", "xlf2", "xtb"]
       --id-prefix, --ip            Adds a prefix to the translation identifier based on the translation filename (see
                                    --id-prefix-strategy)
                                    [boolean] [default: false]
@@ -186,6 +215,9 @@ Options:
   -h, --help                       Show help
                                    [boolean]
 ```
+
+<details>
+  <summary>Show options details</summary>
 
 ### id-prefix
 
@@ -218,6 +250,8 @@ Example for message id `msg1` on file `component-one.messages.pt.json`:
 | as-is      | `component-one.msg2` |
 | dot-case   | `component.one.msg1` |
 
+</details>
+
 ## .gitignore
 
 Add the line corresponding to the format being used to avoid committing the generated merged files.
@@ -226,6 +260,7 @@ Add the line corresponding to the format being used to avoid committing the gene
 messages.*.arb
 messages.*.json
 messages.*.xlf
+messages.*.xtb
 ```
 
 ## Sample applications
