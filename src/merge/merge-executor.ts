@@ -15,20 +15,15 @@ export class MergeExecutor {
    */
   private readonly translationFilenamesGlobPattern = `/**/*.messages.*.${this.mergerInterface.extension}`;
   /**
-   * Used to extract the language code from the filename.
+   * Used to extract the component name and language code from the filename.
    *
-   * e.g. component-one.messages.fr.json -> fr
+   * e.g. component-one.messages.fr.json
+   *      1 -> component-one
+   *      2 -> fr
    * @type {RegExp}
    */
-  private readonly translationFileLanguageCodeRegexPattern = `.messages.(.*).${this.mergerInterface.extension}$`;
+  private readonly translationFileRegexPattern = `^(.*)\\.messages\\.(.*)\\.${this.mergerInterface.extension}$`;
 
-  /**
-   * Used to extract the translation file base name from the filename.
-   *
-   * e.g. component-one.messages.fr.json -> component-one
-   * @type {RegExp}
-   */
-  private readonly translationFileBaseNameRegexPattern = `^(.*).messages.*.${this.mergerInterface.extension}$`;
   /**
    * Character that will be used to separate the prefix from the message id.
    *
@@ -57,13 +52,11 @@ export class MergeExecutor {
     const partialTranslationFilePaths = glob.sync(
       inputRootFolder + this.translationFilenamesGlobPattern
     );
-
     const languageToPartialTranslationObjectsMap = this.buildLanguageToPartialTranslationObjectsMap(
       partialTranslationFilePaths,
       idPrefix,
       idPrefixStrategy
     );
-
     const mergedTranslationObjectsMap = this.mergePartialTranslationObjects(
       languageToPartialTranslationObjectsMap
     );
@@ -151,7 +144,7 @@ export class MergeExecutor {
    */
   private getTranslationFileBaseName(translationFilePath: string): string {
     const translationFilename = path.basename(translationFilePath);
-    return new RegExp(this.translationFileBaseNameRegexPattern, 'i').exec(translationFilename)![1];
+    return new RegExp(this.translationFileRegexPattern, 'i').exec(translationFilename)![1];
   }
 
   /**
@@ -258,6 +251,6 @@ export class MergeExecutor {
    * @returns Language code
    */
   private getLanguageCodeFromFilePath(filename: string): string {
-    return new RegExp(this.translationFileLanguageCodeRegexPattern, 'i').exec(filename)![1];
+    return new RegExp(this.translationFileRegexPattern, 'i').exec(filename)![2];
   }
 }
